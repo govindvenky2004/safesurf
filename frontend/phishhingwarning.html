@@ -1,0 +1,89 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Phishing Warning</title>
+    <style>
+        body {
+            margin: 0;
+            padding: 0;
+            font-family: Arial, sans-serif;
+            text-align: center;
+            background-color: white;
+            transition: background-color 0.5s ease;
+        }
+
+        .warning-container {
+            display: none;
+            color: white;
+            padding: 20px;
+        }
+
+        .warning-container.active {
+            display: block;
+            background-color: red;
+        }
+
+        .warning-sign {
+            font-size: 100px;
+            margin: 20px 0;
+        }
+
+        .details {
+            margin-top: 20px;
+            background: rgba(255, 255, 255, 0.2);
+            padding: 20px;
+            border-radius: 8px;
+        }
+
+        .details h3 {
+            margin-bottom: 10px;
+        }
+
+        .details p {
+            margin: 5px 0;
+        }
+    </style>
+    <script>
+        function displayWarning(data) {
+            const container = document.querySelector('.warning-container');
+            const urlElement = document.getElementById('detected-url');
+            const featuresElement = document.getElementById('detected-features');
+            const resultElement = document.getElementById('detection-result');
+
+            // Update data dynamically
+            urlElement.textContent = data.url;
+            featuresElement.textContent = data.features;
+            resultElement.textContent = data.result;
+
+            // Activate warning mode
+            document.body.style.backgroundColor = 'red';
+            container.classList.add('active');
+        }
+
+        window.onload = () => {
+            // Fetch dynamic data from query parameters or server
+            const urlParams = new URLSearchParams(window.location.search);
+            const data = {
+                url: urlParams.get('url') || "Unknown",
+                features: urlParams.get('features') || "Unknown",
+                result: urlParams.get('result') || "Unknown",
+            };
+            displayWarning(data);
+        };
+    </script>
+</head>
+<body>
+    <div class="warning-container">
+        <div class="warning-sign">⚠️</div>
+        <h1>Warning: Phishing Detected</h1>
+        <div class="details">
+            <h3>Details:</h3>
+            <p><strong>URL/Email:</strong> <span id="detected-url"></span></p>
+            <p><strong>Features:</strong> <span id="detected-features"></span></p>
+            <p><strong>Result:</strong> <span id="detection-result"></span></p>
+        </div>
+    </div>
+</body>
+</html>

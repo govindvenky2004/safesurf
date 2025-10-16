@@ -1,0 +1,111 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link rel="stylesheet" href="resultstyle.css">
+    <title>URL Scan Results</title>
+</head>
+<body>
+
+    <h1>URL Scan Results</h1>
+    
+    <!-- Table to display results -->
+    <table id="resultsTable">
+        <thead>
+            <tr>
+                <th>URL</th>
+                <th>Prediction</th>
+                <th>Timestamp</th>
+            </tr>
+        </thead>
+        <tbody>
+            <!-- Data rows will be inserted here -->
+        </tbody>
+    </table>
+
+    <!-- No results message -->
+    <p id="noResultsMessage" style="display: none;">No results found.</p>
+
+    <!-- Button to go back -->
+    <button onclick="goBack()">Return</button>
+
+    <script>
+        // Function to go back to the previous page
+        function goBack() {
+            window.history.back();
+        }
+    
+        // Function to fetch and display results from localStorage
+        function displayResults() {
+            // Retrieve the scan result from localStorage
+            let result = JSON.parse(localStorage.getItem('scanResult'));
+    
+            if (result) {
+                console.log("Fetched result:", result); // Log the fetched result for debugging
+                
+                const tableBody = document.getElementById('resultsTable').querySelector('tbody');
+                const noResultsMessage = document.getElementById('noResultsMessage');
+    
+                // Check if result is valid and contains the necessary fields
+                if (result.url && result.prediction && result.prediction.final_prediction && result.timestamp) {
+                    // Create a new row for the table
+                    const row = document.createElement('tr');
+    
+                    // URL cell
+                    const urlCell = document.createElement('td');
+                    urlCell.textContent = result.url;
+                    row.appendChild(urlCell);
+    
+                    // Prediction cell (access the final_prediction inside prediction)
+                    const predictionCell = document.createElement('td');
+                    predictionCell.textContent = result.prediction.final_prediction;  // Accessing final_prediction
+                    row.appendChild(predictionCell);
+    
+                    // Timestamp cell
+                    const timestampCell = document.createElement('td');
+                    // Format the timestamp (ensure it's a string)
+                    const formattedTimestamp = new Date(result.timestamp).toLocaleString();
+                    timestampCell.textContent = formattedTimestamp;
+                    row.appendChild(timestampCell);
+    
+                    // Append the row to the table
+                    tableBody.appendChild(row);
+                } else {
+                    // If there's no valid result, show the no results message
+                    noResultsMessage.style.display = 'block';
+                }
+            } else {
+                // If no result in localStorage, call the analyze_url function
+                alert('No scan result found, analyzing URL...');
+                const url = window.location.href; // Get current URL or pass another URL to be analyzed
+    
+                // Call the backend to analyze the URL
+                fetch(`/analyze_url?url=${encodeURIComponent(url)}`)
+                    .then(response => response.json())
+                    .then(data => {
+                        if (data.url && data.prediction && data.prediction.final_prediction) {
+                            // Store the result in localStorage
+                            localStorage.setItem('scanResult', JSON.stringify(data));
+    
+                            // Display the result
+                            displayResults(); // Call the same function to display the fetched result
+                        } else {
+                            alert('Failed to analyze the URL. Please try again.');
+                        }
+                    })
+                    .catch(error => {
+                        console.error('Error fetching analysis result:', error);
+                        alert('An error occurred while analyzing the URL.');
+                    });
+            }
+        }
+    
+        // Call displayResults on page load
+        document.addEventListener('DOMContentLoaded', displayResults);
+    </script>
+    
+    
+    
+</body>
+</html>

@@ -1,0 +1,96 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link rel="stylesheet" href="resultstyle.css">
+    <title>Email Results</title>
+</head>
+<body>
+    <h1>Email Analysis Results</h1>
+
+    <!-- Container to display results -->
+    <div id="resultsContainer">
+        <!-- Results will be dynamically inserted here -->
+    </div>
+
+    <!-- Message for no results -->
+    <p id="noResultsMessage" style="display: none;">No email results found.</p>
+
+    <!-- Return Button -->
+     <button onclick="window.location.href='html.html';">Return</button>
+
+
+    <script>
+        // Function to fetch email results from the API
+        async function fetchEmailResults() {
+            try {
+                // Replace this with the URL of your API endpoint
+                const response = await fetch('http://127.0.0.1:5000/get_email_results');
+                
+                if (!response.ok) {
+                    throw new Error('Failed to fetch email results');
+                }
+
+                const data = await response.json();
+
+                // Call the function to display the fetched email results
+                displayEmailResults(data.email_results);
+            } catch (error) {
+                console.error('Error fetching email results:', error);
+                document.getElementById('noResultsMessage').style.display = 'block';
+            }
+        }
+
+        // Function to display email results
+        function displayEmailResults(emailResults) {
+            const resultsContainer = document.getElementById('resultsContainer');
+            const noResultsMessage = document.getElementById('noResultsMessage');
+
+            if (emailResults.length === 0) {
+                noResultsMessage.style.display = 'block';
+                return;
+            }
+
+            // Hide no results message if there are results
+            noResultsMessage.style.display = 'none';
+
+            emailResults.forEach(result => {
+                // Create a div for each email result
+                const resultDiv = document.createElement('div');
+                resultDiv.classList.add('email-result');
+
+                resultDiv.innerHTML = `
+                    <div class="result-item">
+                        <strong>Email Address:</strong> ${result.email_address}
+                    </div>
+                    <div class="result-item">
+                        <strong>Folder:</strong> ${result.folder}
+                    </div>
+                    <div class="result-item">
+                        <strong>Subject:</strong> ${result.subject}
+                    </div>
+                    <div class="result-item">
+                        <strong>Sender:</strong> ${result.sender}
+                    </div>
+                    <div class="result-item">
+                        <strong>Message:</strong> ${result.message}
+                    </div>
+                    <div class="result-item">
+                        <strong>Prediction:</strong> ${result.prediction}
+                    </div>
+                    <div class="result-item">
+                        <strong>Timestamp:</strong> ${result.timestamp}
+                    </div>
+                `;
+
+                // Append the result to the container
+                resultsContainer.appendChild(resultDiv);
+            });
+        }
+
+        // Call the function to fetch and display email results
+        fetchEmailResults();
+    </script>
+</body>
+</html>

@@ -1,0 +1,31 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>SafeSurf - Phishing Detection</title>
+    <script>
+        async function checkUrl() {
+            const url = document.getElementById('urlInput').value;  // Assuming there's an input with id 'urlInput'
+
+            const response = await fetch('http://127.0.0.1:5000/predict', {
+                method: 'POST',
+                headers: {
+                    'Content-Type': 'application/json'
+                },
+                body: JSON.stringify({ url: url })
+            });
+
+            const result = await response.json();
+            console.log(result);  // Handle the result here
+            document.getElementById('result').innerText = `Prediction: ${result.result}`;
+        }
+    </script>
+</head>
+<body>
+    <h1>SafeSurf - Phishing Detection</h1>
+    <input type="text" id="urlInput" placeholder="Enter URL">
+    <button onclick="checkUrl()">Check URL</button>
+    <p id="result"></p>
+</body>
+</html>

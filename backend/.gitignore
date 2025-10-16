@@ -1,0 +1,50 @@
+# === Python ===
+__pycache__/
+*.pyc
+*.pyo
+*.pyd
+
+# === Virtual Environment ===
+venv/
+.env
+
+# === Logs and Temporary Files ===
+*.log
+app.log
+
+# === Datasets and Models ===
+*.csv
+*.pkl
+*.arff
+*.h5
+*.pt
+*.ckpt
+*.joblib
+*.npy
+*.npz
+
+# === Large / Generated Files ===
+archive/
+*.dll
+
+# === Specific Dataset and Model Files ===
+Phishing_Email.csv
+Phising_Training_Dataset.csv
+Phising_Testing_Dataset.csv
+Training Dataset.arff
+preprocessed_data.pkl
+email_analysis_log.txt
+random_forest_model.pkl
+naive_bayes_model.pkl
+vectorizer.pkl
+tfidf_vectorizer.pkl
+imputer.pkl
+scaler.pkl
+scaler1.pkl
+scaler_columns.pkl
+
+# === IDE / System Files ===
+.vscode/
+.idea/
+.DS_Store
+Thumbs.db

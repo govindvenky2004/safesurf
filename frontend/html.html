@@ -1,0 +1,177 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>safesurf</title>
+    <link rel="stylesheet" href="style.css">
+    <link href="https://fonts.googleapis.com/css2?family=Lora:ital,wght@0,400;0,600;1,400&family=Montserrat:wght@400;600&family=Nunito:wght@400;600&family=Open+Sans:wght@400;600&family=Poppins:wght@400;700&family=Roboto:wght@400;700&family=Roboto+Mono&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.7.1/css/all.min.css" integrity="sha512-5Hs3dF2AEPkpNAR7UiOHba+lRSJNeM2ECkwxUIxC1Q/FLycGTbNapWXB4tP889k5T5Ju8fs4b1P5z/iB4nMfSQ==" crossorigin="anonymous" referrerpolicy="no-referrer" />
+</head>
+<body>
+    <div class="hd1">
+        <h3 class="hdd">Phishing detector...!</h3>
+    </div>
+
+    <header class="hmt">
+        <div class="menu">
+            <label for="chk1">
+                <i class="fa fa-bars"></i>
+            </label>
+        </div>
+       
+        <ul class="btns">
+            <li><a href="#">Home</a> </li>
+            <li><a href="#">Settings</a> </li>
+            <li><a href="#">About</a> </li>
+            <li><a href="#">Builders</a> </li>
+            <li>
+                <a href="#"> <i class="fab fa-facebook"></i></a>
+                <a href="#"> <i class="fab fa-twitter"></i></a>
+                <a href="#"> <i class="fab fa-instagram"></i></a>
+            </li>
+        </ul>
+    </header>
+
+    <div class="war">
+        <h1>WARNING!</h1>
+    </div>
+
+    <div class="ful">
+        <img class="bot" src="aibot.jpg" alt="">
+        <p class="par1"> 
+            <b>Hello!</b> I’m your AI assistant, designed to help you stay safe online by detecting phishing attempts. Phishing is a malicious practice where attackers trick users into revealing sensitive information like passwords, financial details, or personal information. With advanced algorithms, I can analyze links, emails, and messages to identify suspicious patterns and fraudulent websites. Stay safe!
+        </p>
+    </div>
+
+    <div class="ful2">
+        <h2>SafeSurf Detects and Monitors Phishing and Scam Sites</h2>
+        <p class="dwn">With SafeSurf, you can scan suspicious URLs and E-mails for typosquots and various domains</p>
+        <ul class="tabs">
+            <li data-tab-target="#home" class="tab" id="tb1">E-mail</li>
+            <li data-tab-target="#pricing" class="tab" id="tb2">URL</li>
+        </ul>
+
+        <div class="tab-content">
+            <div id="home" data-tab-content class="active">
+                <h3 class="mnm">E-mail</h3>
+                <input class="sbar" type="email" name="E-mail" placeholder="   example@gmail.com" >
+                <h3 class="mnm">Password</h3>
+                <input class="sbar" type="password" name="password" placeholder="   Password">
+                <br>
+                <h3 class="mnm">Folder(EXPECTED:SPAM and INBOX)!!</h3>
+                <input class="sbar" type="text" name="folder" placeholder="   folder">
+                <br><br>
+                <button class="scn-email" type="scan">Scan</button>
+            </div>
+
+            <div id="pricing" data-tab-content>
+                <h3 class="mnm">URLs</h3>
+                <input class="sbar" type="URL" name="URLs" id="urlInput" placeholder="    https://www.example.com/sample-page" >
+                <button class="scn-url" type="button" onclick="scanURL()">Scan</button>
+                <div id="scanResult"></div>
+            </div>
+        </div>
+    </div>
+
+    <script>
+        const tabs = document.querySelectorAll('[data-tab-target]')
+        const tabContents = document.querySelectorAll('[data-tab-content]')
+
+        tabs.forEach(tab => {
+            tab.addEventListener('click', () => {
+                const target = document.querySelector(tab.dataset.tabTarget)
+                tabContents.forEach(tabContent => {
+                    tabContent.classList.remove('active')
+                })
+                tabs.forEach(tab => {
+                    tab.classList.remove('active')
+                })
+                tab.classList.add('active')
+                target.classList.add('active')
+            })
+        })
+
+        function scanURL() {
+    const url = document.getElementById('urlInput').value;
+
+    if (url) {
+        fetch(`http://127.0.0.1:5000/get_url_results?url=${encodeURIComponent(url)}`)
+            .then(response => {
+                if (!response.ok) {
+                    throw new Error(`Server responded with status: ${response.status}`);
+                }
+                return response.json();
+            })
+            .then(data => {
+                // Store the result in localStorage
+                localStorage.setItem('scanResult', JSON.stringify(data));
+                
+                // Redirect to results page
+                window.location.href = 'result-url.html';
+            })
+            .catch(error => {
+                console.error('Error:', error);
+                alert('There was an error while scanning the URL. Please try again.');
+            });
+    } else {
+        alert('Please enter a valid URL.');
+    }
+}
+
+    </script>
+
+    <footer class="ftr">
+        <div class="cmp">
+            <h3>Company</h3><br>
+            <p>This Web is developed by: <br>
+            Amruth M, <br>
+            Amogh Siddarth, <br>
+            Govind Venkatesh, <br>
+            Hemanth M.</p>
+        </div>
+
+        <div class="acd">
+            <h3>Academic details</h3><br>
+            <p>
+                1DT22CS011, <br>
+                1DT22CS010, <br>
+                1DT22CS049, <br>
+                1DT22CS059, <br>
+            </p>
+        </div>
+
+        <div class="prd">
+            <h3>Quick Links</h3><br>
+            <p class="dsn">
+                <li><a href="#">Home</a> </li> <br>
+                <li><a href="#">Settings</a> </li> <br>
+                <li><a href="#">About</a> </li> <br>
+                <li><a href="#">Builders</a> </li> <br>
+            </p>
+        </div>
+
+        <div class="cts">
+            <h3>Contact us</h3><br>
+            <p>Ph.no: <br>
+            +91 8296734315 <br>
+            +91 9986611975 <br>
+            +91 7676055729 <br>
+             </p>
+        </div>
+    </footer>
+
+    <footer class="fls">
+        <h2>Follow us</h2> <br>
+            <p class="don">
+            <a href="#"> <i class="fab fa-facebook fa-2x" id="w1"></i></a>
+            <a href="#"> <i class="fab fa-twitter fa-2x" id="w1"></i></a>
+            <a href="#"> <i class="fab fa-instagram fa-2x" id="w1"></i></a>
+            <a href="#"> <i class="fab fa-telegram fa-2x" id="w1"></i></a>
+            <a href="#"> <i class="fab fa-gmail" id="w1"></i></a>
+            </p>
+    </footer>
+    <p class="lst">#__All rights reserved..</p>
+    <script src="script.js" ></script>
+</body>
+</html>
